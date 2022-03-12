@@ -11,45 +11,93 @@
 final int SQUARE_SIZE = 50;
 final int COLUMNS = 10;
 final int ROWS = 10;
-int[][][] grid = createGrid(COLUMNS, ROWS);
+final int TOP_OFFSET = 100;
+final int SUBMARINE = 40;
+final int TORPEDO_HUNTER = 50;
+int score = 0;
+int[][][] grid;
+
+void settings() {
+  size(500, 500 + TOP_OFFSET);
+}
 
 void setup() {
-  size(500, 500);
-  //int[][] grid = createGrid(COLUMNS, ROWS);
+  grid = generateGrid(COLUMNS, ROWS);
+  generateSubmarines();
+  generateTorpedoHunters();
+  
+  //int direction = floor(random(0, 4));
+  //int column = floor(random(0, ROWS + 1));
+  //int row = floor(random(0, COLUMNS + 1));
+  //int[] square = grid[row][column];
+  
+  //while(square[2] != 0) {
+  //  column = floor(random(0, ROWS + 1));
+  //  row = floor(random(0, COLUMNS + 1));
+  //}
+  
+  //square[2] = ONDERZEER;
+  
+  //println(square);
+}
+
+void generateTorpedoHunters() {
+  int[] directions = {0, 1, 2, 3};
+  for (int i = 0; i < 3; i += 1) {
+    
+    int direction = floor(random(0, 4));
+    int[][] location = new int[2][2];
+    
+    int column = floor(random(0, ROWS));
+    int row = floor(random(0, COLUMNS));
+    int[] square = grid[row][column];
+    
+    while(square[2] != 0) {
+      column = floor(random(0, ROWS));
+      row = floor(random(0, COLUMNS));
+    }
+    
+    boolean isAtTopEdge = row == 0;
+    boolean isAtBottomEdge = row == ROWS;
+    boolean isAtLeftEdge = column == 0;
+    boolean isRightEdge = column == COLUMNS;
+    
+    //int direction = floor(random(0, 4));
+    //int step = 1;
+    
+    //int column = floor(random(0, ROWS));
+    //int row = floor(random(0, COLUMNS));
+    //int[] square = grid[row][column];
+  
+    //while(square[2] != 0) {
+    //  column = floor(random(0, ROWS));
+    //  row = floor(random(0, COLUMNS));
+    //}
+    
+    //square[2] = TORPEDO_HUNTER;
+  }
+}
+
+void generateSubmarines() {
+  for (int i = 0; i < 4; i += 1) {
+    int column = floor(random(0, ROWS));
+    int row = floor(random(0, COLUMNS));
+    int[] square = grid[row][column];
+  
+    while(square[2] != 0) {
+      column = floor(random(0, ROWS));
+      row = floor(random(0, COLUMNS));
+    }
+    square[2] = SUBMARINE;
+  }
 }
 
 void draw() {
+  background(255);
   drawGrid(SQUARE_SIZE, grid);
-}
-
-void updateCell(int[] cell) {
-  switch (cell[2]) {
-    case 1:
-      fill(0);
-      drawSquare(cell[0], cell[1], SQUARE_SIZE);
-  }
+  drawScore();
 }
 
 void mousePressed() {
-  //println(mouseX, mouseY);
-  //println(grid[0][0]);
-  handleMouseClick();
-}
-
-void handleMouseClick() {
-  for (int i = 0; i < grid.length; i += 1) {
-    for (int j = 0; j < grid[i].length; j += 1) {
-      int[] cell = grid[i][j];
-      if(isSquareClicked(cell[0], cell[1])) {
-        if (cell[2] == 0) {
-          cell[2] = 1;
-        }
-        println(cell);
-      }
-    }
-  }
-}
-
-boolean isSquareClicked(int xCoord, int yCoord) {
-  return (mouseX > xCoord && mouseX < xCoord + SQUARE_SIZE) && (mouseY > yCoord && mouseY < yCoord + SQUARE_SIZE);
+  handleSquareClick();
 }
