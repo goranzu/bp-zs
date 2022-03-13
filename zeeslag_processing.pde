@@ -1,103 +1,51 @@
-/*
-  Armada:
-    - 1 Slagschip - 4 vakjes lang
-    - 2 Kruisers - 3 vakjes lang
-    - 3 Torpedobootjagers - 2 vakjes lang
-    - 4 Onderzeerers - 1 vakje in omvang
-    
-    Geplaatst horizontaal of verticaal
-*/
-
-final int SQUARE_SIZE = 50;
-final int COLUMNS = 10;
-final int ROWS = 10;
+final int WIDTH = 500;
+final int HEIGHT = 500;
 final int TOP_OFFSET = 100;
-final int SUBMARINE = 40;
-final int TORPEDO_HUNTER = 50;
+final int SLAGSCHIP_ONE = 500;
+final int CRUISER_ONE = 400;
+final int CRUISER_TWO = 401;
+final int TORPEDO_HUNTER_ONE = 300;
+final int TORPEDO_HUNTER_TWO = 301;
+final int TORPEDO_HUNTER_THREE = 302;
+final int SUBMARINE_ONE = 200;
+final int SUBMARINE_TWO = 201;
+final int SUBMARINE_THREE = 202;
+final int SUBMARINE_FOUR = 203;
+final int MINE = 1;
+final int SQUARE_SIZE = 50;
+int attempts = 0;
+int shipsFound = 0;
+
 int score = 0;
-int[][][] grid;
+int rows = 10;
+int columns = 10;
+int[][][] grid = new int[rows][columns][3];
 
 void settings() {
-  size(500, 500 + TOP_OFFSET);
+  size(WIDTH, HEIGHT + TOP_OFFSET);
 }
 
 void setup() {
-  grid = generateGrid(COLUMNS, ROWS);
-  generateSubmarines();
-  generateTorpedoHunters();
+  grid = generateGrid(rows, columns);
   
-  //int direction = floor(random(0, 4));
-  //int column = floor(random(0, ROWS + 1));
-  //int row = floor(random(0, COLUMNS + 1));
-  //int[] square = grid[row][column];
-  
-  //while(square[2] != 0) {
-  //  column = floor(random(0, ROWS + 1));
-  //  row = floor(random(0, COLUMNS + 1));
-  //}
-  
-  //square[2] = ONDERZEER;
-  
-  //println(square);
-}
-
-void generateTorpedoHunters() {
-  int[] directions = {0, 1, 2, 3};
-  for (int i = 0; i < 3; i += 1) {
-    
-    int direction = floor(random(0, 4));
-    int[][] location = new int[2][2];
-    
-    int column = floor(random(0, ROWS));
-    int row = floor(random(0, COLUMNS));
-    int[] square = grid[row][column];
-    
-    while(square[2] != 0) {
-      column = floor(random(0, ROWS));
-      row = floor(random(0, COLUMNS));
-    }
-    
-    boolean isAtTopEdge = row == 0;
-    boolean isAtBottomEdge = row == ROWS;
-    boolean isAtLeftEdge = column == 0;
-    boolean isRightEdge = column == COLUMNS;
-    
-    //int direction = floor(random(0, 4));
-    //int step = 1;
-    
-    //int column = floor(random(0, ROWS));
-    //int row = floor(random(0, COLUMNS));
-    //int[] square = grid[row][column];
-  
-    //while(square[2] != 0) {
-    //  column = floor(random(0, ROWS));
-    //  row = floor(random(0, COLUMNS));
-    //}
-    
-    //square[2] = TORPEDO_HUNTER;
-  }
-}
-
-void generateSubmarines() {
-  for (int i = 0; i < 4; i += 1) {
-    int column = floor(random(0, ROWS));
-    int row = floor(random(0, COLUMNS));
-    int[] square = grid[row][column];
-  
-    while(square[2] != 0) {
-      column = floor(random(0, ROWS));
-      row = floor(random(0, COLUMNS));
-    }
-    square[2] = SUBMARINE;
-  }
+  layoutOne();
+  generateMines();
 }
 
 void draw() {
   background(255);
-  drawGrid(SQUARE_SIZE, grid);
-  drawScore();
+  if(shipsFound == 10) {
+    textSize(50);
+    textAlign(CENTER, CENTER);
+    fill(0);
+    text("EINDSCHERM", width / 2, 50);
+  } else {
+    drawScore();
+    drawGrid(SQUARE_SIZE, grid);  
+  }
 }
 
 void mousePressed() {
+  println(shipsFound);
   handleSquareClick();
 }
