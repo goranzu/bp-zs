@@ -18,6 +18,7 @@ void drawGrid(int squareSize, int[][][] grid) {
   final int BOAT_HIT_COLOR = #000000;
   final int MINE_COLOR = #eb1313;
   final int EMPTY_SQUARE = #429ea6;
+  
   for(int i = 0; i < grid.length; i += 1) {
     for(int j = 0; j < grid[i].length; j += 1) {
       int[] square = grid[j][i];

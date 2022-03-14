@@ -52,6 +52,7 @@ void handleSquareClick() {
     for (int j = 0; j < grid[i].length; j += 1) {
       int[] square = grid[i][j];
       if(isSquareClicked(square[0] * SQUARE_SIZE, square[1] * SQUARE_SIZE)) {
+        //println(square);
         int squareType = square[2];
         if(square[3] == 0) {
           // vak is onthuld
@@ -91,5 +92,7 @@ void handleSquareClick() {
 }
 
 boolean isSquareClicked(int xCoord, int yCoord) {
-  return (mouseX > xCoord && mouseX < xCoord + SQUARE_SIZE) && (mouseY > (yCoord + TOP_OFFSET) && mouseY < (yCoord + TOP_OFFSET) + SQUARE_SIZE);
+  int offSet = 100; // verander dit. Dit moet berekend worden.
+  return (mouseX > xCoord + offSet && mouseX < xCoord + SQUARE_SIZE + offSet) &&
+         (mouseY > (yCoord + TOP_OFFSET) && mouseY < (yCoord + TOP_OFFSET) + SQUARE_SIZE);
 }
