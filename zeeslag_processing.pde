@@ -42,24 +42,44 @@ void setup() {
 }
 
 
+String name = "blabla";
 
 void draw() {
   background(255);
-  if(shipsFound == 10) {
-    textSize(50);
-    textAlign(CENTER, CENTER);
-    fill(0);
-    text("EINDSCHERM", width / 2, 50);
-  } else {
-    drawScore();
-    drawGrid(SQUARE_SIZE, grid);
-    textSize(30);
-    fill(0);
-    drawTargetAmountForRows();
-    drawTargetAmountForColumns();
-  }
+  textSize(35);
+  textAlign(CENTER, CENTER);
+  fill(0);
+  text("Enter your name: ", width / 2, 100);
+  
+  textSize(28);
+  textAlign(CENTER, CENTER);
+  fill(0);
+  text(name, width / 2, 150);
+  //if(shipsFound == 10) {
+  //  textSize(50);
+  //  textAlign(CENTER, CENTER);
+  //  fill(0);
+  //  text("EINDSCHERM", width / 2, 50);
+  //} else {
+  //  drawScore();
+  //  drawGrid(SQUARE_SIZE, grid);
+  //  textSize(30);
+  //  fill(0);
+  //  drawTargetAmountForRows();
+  //  drawTargetAmountForColumns();
+  //}
 }
 
 void mousePressed() {
   handleSquareClick();
+}
+
+void keyPressed() {
+  if(key == BACKSPACE && name.length() > 1) {
+    println("backspace");
+    // probeer iets met substrings.
+  } else {
+    name += key;
+    println(key);
+  }
 }
