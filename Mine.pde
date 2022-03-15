@@ -12,6 +12,7 @@ void generateMines() {
   }
   
   float amountMines = maxEmptyPositions * 0.1;
+  
   for(int i = 0; i < amountMines; i += 1) {
     String location = possibleMineLocations[floor(random(0, maxEmptyPositions))];
     int[] loc = int(split(location, "-"));

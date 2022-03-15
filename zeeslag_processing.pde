@@ -28,7 +28,6 @@ void settings() {
 int[] targetsPerRow = new int[rows];
 int[] targetsPerColumns = new int[columns];
 
-
 void setup() {
   grid = generateGrid(rows, columns);
   
@@ -36,31 +35,13 @@ void setup() {
   generateMines();
   
   // bereken per rij hoeveel doelwitten.
-  int row = 0;
-  while(row != rows) {
-    int targets = 0;
-    for(int i = 0; i < columns; i += 1) {
-      if(grid[i][row][2] > 1) {
-        targets += 1;
-      }
-    }
-    targetsPerRow[row] = targets;
-    row += 1;
-  }
+  targetsPerRow = calcTargetsPerRow(rows);
   
   // bereken per colom hoeveel doelwitten.
-  int col = 0;
-  while(col != columns) {
-    int targets = 0;
-    for(int i = 0; i < rows; i += 1) {
-      if(grid[col][i][2] > 1) {
-        targets += 1;
-      }
-    }
-    targetsPerColumns[col] = targets;
-    col += 1;
-  }
+  targetsPerColumns = calcTargetsPerColumn(columns);
 }
+
+
 
 void draw() {
   background(255);
@@ -74,13 +55,8 @@ void draw() {
     drawGrid(SQUARE_SIZE, grid);
     textSize(30);
     fill(0);
-    for(int i = 0; i < targetsPerRow.length; i += 1) {
-      text(targetsPerRow[i], WIDTH - 80, i * 50 + TOP_OFFSET);
-    }
-    for(int i = 0; i < targetsPerColumns.length; i += 1) {
-      text(targetsPerColumns[i], (width / 2) + (i * 50 + 20) - ((grid.length / 2) * 50), TOP_OFFSET - 50);
-    }
-    //text(targets, WIDTH - 80, grid[2][0][1] * 50 + TOP_OFFSET);
+    drawTargetAmountForRows();
+    drawTargetAmountForColumns();
   }
 }
 
