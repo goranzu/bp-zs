@@ -32,7 +32,7 @@ void setup() {
   grid = generateGrid(rows, columns);
   
   layoutOne();
-  generateMines();
+  generateMines(0.1);
   
   // bereken per rij hoeveel doelwitten.
   targetsPerRow = calcTargetsPerRow(rows);
@@ -46,28 +46,28 @@ String name = "blabla";
 
 void draw() {
   background(255);
-  textSize(35);
-  textAlign(CENTER, CENTER);
-  fill(0);
-  text("Enter your name: ", width / 2, 100);
+  //textSize(35);
+  //textAlign(CENTER, CENTER);
+  //fill(0);
+  //text("Enter your name: ", width / 2, 100);
   
-  textSize(28);
-  textAlign(CENTER, CENTER);
-  fill(0);
-  text(name, width / 2, 150);
-  //if(shipsFound == 10) {
-  //  textSize(50);
-  //  textAlign(CENTER, CENTER);
-  //  fill(0);
-  //  text("EINDSCHERM", width / 2, 50);
-  //} else {
-  //  drawScore();
-  //  drawGrid(SQUARE_SIZE, grid);
-  //  textSize(30);
-  //  fill(0);
-  //  drawTargetAmountForRows();
-  //  drawTargetAmountForColumns();
-  //}
+  //textSize(28);
+  //textAlign(CENTER, CENTER);
+  //fill(0);
+  //text(name, width / 2, 150);
+  if(shipsFound == 10) {
+    textSize(50);
+    textAlign(CENTER, CENTER);
+    fill(0);
+    text("EINDSCHERM", width / 2, 50);
+  } else {
+    drawScore();
+    drawGrid(SQUARE_SIZE, grid);
+    textSize(30);
+    fill(0);
+    drawTargetAmountForRows();
+    drawTargetAmountForColumns();
+  }
 }
 
 void mousePressed() {

@@ -8,10 +8,11 @@ int[][][] generateGrid(int rows, int cols) {
     for(int j = 0; j < cols; j += 1) {
       int[] square = grid[i][j];
       // geef de indexes een constante. zodat duidelijker is waar een index voor staat.
-      square[0] = i;
-      square[1] = j;
-      square[2] = DEFAULT_SQUARE;
-      square[3] = 0;
+      square[0] = i; // welke colom
+      square[1] = j; // welke rij
+      square[2] = DEFAULT_SQUARE; // type - boat, mijn etc...
+      square[3] = 1; // zichtbaar = 1 , onzichtbaar = 0
+      //square[4] = 0; // als dit een boot is, wordt dit de lengte van de boot
     } 
   }
   return grid;
@@ -29,14 +30,14 @@ void drawGrid(int squareSize, int[][][] grid) {
       int squareType = square[2];
       int isRevealed = square[3];
       
-      if(isRevealed == 1) {
-        if(squareType > 10) {
+      if(isSquareRevealed(isRevealed)) {
+        if(isSquareTarget(squareType)) {
           fill(BOAT_HIT_COLOR);
           drawSquare(j, i, squareSize);
-        } else if(squareType == DEFAULT_SQUARE) {
+        } else if(isSquareEmpty(squareType)) {
           fill(EMPTY_SQUARE_COLOR);
           drawSquare(j, i, squareSize);
-        } else if(squareType == MINE_SQUARE) {
+        } else if(isSquareMine(squareType)) {
           fill(MINE_COLOR);
           drawSquare(j, i, squareSize);
         }
@@ -84,7 +85,7 @@ int[] calcTargetsPerRow(int rows) {
   while(row != rows) {
     int targets = 0;
     for(int i = 0; i < columns; i += 1) {
-      if(grid[i][row][2] > 1) {
+      if(isSquareTarget(grid[i][row][2])) {
         targets += 1;
       }
     }
@@ -102,7 +103,7 @@ int[] calcTargetsPerColumn(int columns) {
   while(col != columns) {
     int targets = 0;
     for(int i = 0; i < rows; i += 1) {
-      if(grid[col][i][2] > 1) {
+      if(isSquareTarget(grid[col][i][2])) {
         targets += 1;
       }
     }
@@ -123,4 +124,20 @@ void drawTargetAmountForColumns() {
   for(int i = 0; i < targetsPerColumns.length; i += 1) {
       text(targetsPerColumns[i], (width / 2) + (i * 50 + 20) - ((grid.length / 2) * 50), TOP_OFFSET - 50);
   }
+}
+
+String[] getEmptySquares() {
+  int maxEmptyPositions = (columns * rows) - howManyTargetsOnGrid();
+  String[] emptyLocations = new String[maxEmptyPositions];
+  
+  int index = 0;
+  for(int i = 0; i < grid.length; i += 1) {
+    for(int j = 0; j < grid[i].length; j += 1) {
+      if(isSquareEmpty(grid[i][j][2])) {
+        emptyLocations[index] = i + "-" + j;
+        index += 1;
+      }
+    }
+  }  
+  return emptyLocations;
 }
