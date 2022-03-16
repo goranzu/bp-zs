@@ -42,60 +42,41 @@ void handleSquareClick() {
     for (int j = 0; j < grid[i].length; j += 1) {
       int[] square = grid[i][j];
       if(isSquareClicked(square[0] * SQUARE_SIZE, square[1] * SQUARE_SIZE)) {
-        //println(square);
         int squareType = square[2];
-        if(square[3] == 0) {
-          // vak is onthuld
+        if(!isSquareRevealed(square[3])) {
+          // onthul vakje
           square[3] = 1;
           attempts += 1;
           
-          if(squareType == MINE) {
+          if(isSquareMine(squareType)) {
             score -= 1;
             return;
           }
           
           // check if ship has been revealed and award points
 
-          if(isShipSunk(SLAGSCHIP_ONE) && isBattleship(squareType)) {
+          // de check of het hele schip ontdekt is en of de vakje waarop geklikt is deze schip ook is.
+          // dit is nodig anders worden er extra punten/ontdekte schepen toegekend
+          if(isShipSunk(SLAGSCHIP_ONE) && squareType == SLAGSCHIP_ONE) {
             shipsFound += 1;
             score += shipLength(SLAGSCHIP_ONE);
-          } else if(isCruiser(squareType)) {
-            if(isShipSunk(CRUISER_ONE) || isShipSunk(CRUISER_TWO)) {
-              shipsFound += 1;
-              score += shipLength(CRUISER_ONE);
-            }
-          } else if(isTorpedoHunter(squareType)) {
-            if(isShipSunk(TORPEDO_HUNTER_ONE) || isShipSunk(TORPEDO_HUNTER_TWO) || isShipSunk(TORPEDO_HUNTER_THREE)) {
-              shipsFound += 1;
-              score += shipLength(TORPEDO_HUNTER_ONE);
-            }
-          } else if(isSubmarine(squareType)) {
-            if(isShipSunk(SUBMARINE_ONE) ||
-               isShipSunk(SUBMARINE_TWO) ||
-               isShipSunk(SUBMARINE_THREE) ||
-               isShipSunk(SUBMARINE_ONE)) {
-              shipsFound += 1;
-              score += shipLength(SUBMARINE_ONE);   
-             }
+            // mischien voor elke schip type een functie maken?
+          } else if((isShipSunk(CRUISER_ONE) && squareType == CRUISER_ONE) ||
+                    (isShipSunk(CRUISER_TWO) && squareType == CRUISER_TWO)) {
+            shipsFound += 1;
+            score += shipLength(CRUISER_ONE);
+          } else if((isShipSunk(TORPEDO_HUNTER_ONE) && squareType == TORPEDO_HUNTER_ONE) ||
+                    (isShipSunk(TORPEDO_HUNTER_TWO) && squareType == TORPEDO_HUNTER_TWO) ||
+                    (isShipSunk(TORPEDO_HUNTER_THREE) && squareType == TORPEDO_HUNTER_THREE)){
+            shipsFound += 1;
+            score += shipLength(TORPEDO_HUNTER_ONE);
+          } else if((isShipSunk(SUBMARINE_ONE) && squareType == SUBMARINE_ONE) ||
+                    (isShipSunk(SUBMARINE_TWO) && squareType == SUBMARINE_TWO) ||
+                    (isShipSunk(SUBMARINE_THREE) && squareType == SUBMARINE_THREE) ||
+                    (isShipSunk(SUBMARINE_FOUR) && squareType == SUBMARINE_FOUR)) {
+            shipsFound += 1;
+            score += shipLength(SUBMARINE_ONE);;
           }
-          
-          //else if((isShipSunk(CRUISER_ONE) && squareType == CRUISER_ONE) ||
-          //          (isShipSunk(CRUISER_TWO) && squareType == CRUISER_TWO)) {
-          //  shipsFound += 1;
-          //  score += shipLength(CRUISER_ONE);
-          //} 
-          //else if((isShipSunk(TORPEDO_HUNTER_ONE) && squareType == TORPEDO_HUNTER_ONE) ||
-          //          (isShipSunk(TORPEDO_HUNTER_TWO) && squareType == TORPEDO_HUNTER_TWO) ||
-          //          (isShipSunk(TORPEDO_HUNTER_THREE) && squareType == TORPEDO_HUNTER_THREE)){
-          //  shipsFound += 1;
-          //  score += shipLength(TORPEDO_HUNTER_ONE);
-          //} else if((isShipSunk(SUBMARINE_ONE) && squareType == SUBMARINE_ONE) ||
-          //          (isShipSunk(SUBMARINE_TWO) && squareType == SUBMARINE_TWO) ||
-          //          (isShipSunk(SUBMARINE_THREE) && squareType == SUBMARINE_THREE) ||
-          //          (isShipSunk(SUBMARINE_FOUR) && squareType == SUBMARINE_FOUR)) {
-          //  shipsFound += 1;
-          //  score += shipLength(SUBMARINE_ONE);
-          //}
         }
       }
     }

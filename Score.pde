@@ -1,5 +1,4 @@
 void drawScore() {
-  String playerName = "Player 1";
   final int NAME_FONT_SIZE = 32;
   final int SCORE_FONT_SIZE = 28;
   final int NAME_COLOR = 0;

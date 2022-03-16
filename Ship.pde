@@ -13,20 +13,23 @@ int shipLength(int shipType) {
 }
 
 boolean isShipSunk(int squareType) {
-  int boatLength = shipLength(squareType);
+  // bereken de schip lengte
+  int shipLength = shipLength(squareType);
   
+  // tel hoevaak een schip is geraakt(revealed).
   int hits = 0;
   
   for(int i = 0; i < grid.length; i += 1) {
     for(int j = 0; j < grid[i].length; j += 1) {
       int[] square = grid[i][j];
-      if(square[2] == squareType && square[3] == 1) {
+      boolean shipIsHit = square[2] == squareType;
+      if(shipIsHit && isSquareRevealed(square[3])) {
         hits += 1;
       }
     }
   }
   
-  if(hits == boatLength) {
+  if(hits == shipLength) {
     return true;
   } else {
     return false;

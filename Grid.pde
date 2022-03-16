@@ -11,7 +11,7 @@ int[][][] generateGrid(int rows, int cols) {
       square[0] = i; // welke colom
       square[1] = j; // welke rij
       square[2] = DEFAULT_SQUARE; // type - boat, mijn etc...
-      square[3] = 1; // zichtbaar = 1 , onzichtbaar = 0
+      square[3] = 0; // zichtbaar = 1 , onzichtbaar = 0
       //square[4] = 0; // als dit een boot is, wordt dit de lengte van de boot
     } 
   }
@@ -33,18 +33,16 @@ void drawGrid(int squareSize, int[][][] grid) {
       if(isSquareRevealed(isRevealed)) {
         if(isSquareTarget(squareType)) {
           fill(BOAT_HIT_COLOR);
-          drawSquare(j, i, squareSize);
         } else if(isSquareEmpty(squareType)) {
           fill(EMPTY_SQUARE_COLOR);
-          drawSquare(j, i, squareSize);
         } else if(isSquareMine(squareType)) {
           fill(MINE_COLOR);
-          drawSquare(j, i, squareSize);
         }
       } else {
         fill(DEFAULT_COLOR);
-        drawSquare(j, i, squareSize);
       }
+      
+      drawSquare(j, i, squareSize);
     }
   }
 }
@@ -140,4 +138,16 @@ String[] getEmptySquares() {
     }
   }  
   return emptyLocations;
+}
+
+int howManyTargetsOnGrid() {
+  int targets = 0;
+  for(int i = 0; i < grid.length; i += 1) {
+    for(int j = 0; j < grid[i].length; j += 1) {
+      if(isSquareTarget(grid[i][j][2])) {
+        targets += 1;
+      } 
+    }  
+  }
+  return targets;
 }
