@@ -28,7 +28,6 @@ int shipsFound = 0;
 boolean gameIsStarted = false;
 boolean isGridSet = false;
 String[] gridButtons = {"10x10", "15x15", "25x25"};
-//boolean gameHasEnded = false;
 
 /*
   aantal colomen en rijen kan ik bereken door de width en eerst 150 van af te trekken
@@ -55,40 +54,23 @@ void setup() {
   //textSize(22);
 }
 
-void gameSetup() {
-// op default staat de grid op 10x10
-  int[] gridSplit = int(split(gridSize, "x"));
-  columns = gridSplit[0];
-  rows = gridSplit[1];
-  
-  if(columns == 10 && rows == 10) {
-    size = 50;
-  } else if(columns == 15 && rows == 15) {
-    size = 40;
-  } else if(columns == 25 && rows == 25) {
-    size = 20;
-  }
-  
-  grid = makeGrid(columns, rows);
-  layoutOne();
-  generateMines(0.1);
-  
-  isGridSet = true;
-}
-
 void draw() {
   background(255);
   if(gameIsStarted && shipsFound == 10) {
     // handle end game
+    //noLoop();
     textSize(28);
     fill(0);
     text(playerName + " has " + score + " points", width / 2, 100);
     
     button(width / 2, 200, 150, 50, "Play again");
+    
+    saveHighscores();
   } else if(gameIsStarted) {
     if(!isGridSet) {
       gameSetup();
     } else {
+      loop();
       drawGrid();
       drawScore();
       
@@ -106,21 +88,9 @@ void draw() {
 void mousePressed() {
   if(gameIsStarted) {
     handleClick();
-  } else {
-    // handle start scherm clicks
   }
 }
 
 void keyPressed() {
-  if(!gameIsStarted) {
-    if(key == BACKSPACE && playerName.length() > 1) {
-      playerName = playerName.substring(0, playerName.length() - 1);
-    } else if(key == BACKSPACE) {
-      playerName = "";
-    } else if(key == SHIFT) {
-      return;
-    } else {
-      playerName += key;
-    }
-  }
+  handleKeyPress();
 }

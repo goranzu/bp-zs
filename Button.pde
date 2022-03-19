@@ -12,6 +12,7 @@ void button(int x, int y, int w, int h, String text) {
        gameIsStarted = true;
       } else if(text == "Play again") {
         // handle play again
+        loop();
         resetGame();
       } else {
         gridSize = text;
