@@ -1,3 +1,11 @@
+/*
+  TODO:
+    - clickHandler werkt niet als window groter wordt.
+    - soms mis ik een mijn (gebeurde eerst niet).
+    - plaatsen van aanwijzingen moet anders.
+    - rare bug in het start scherm waardoor het spel scherm niet klopt.
+*/
+
 final int WIDTH = 700;
 final int HEIGHT = 600;
 final int TOP_OFFSET = 150;
@@ -24,9 +32,11 @@ int score = 0;
 int rows = 10;
 int columns = 10;
 
-int[][][] grid = new int[rows][columns][3];
+int[][][] grid = new int[rows][columns][4];
 
 String playerName = "";
+
+String[] gridButtons = {"10x10", "15x15", "25x25"};
 
 void settings() {
   size(WIDTH, HEIGHT + TOP_OFFSET);
@@ -56,58 +66,39 @@ void draw() {
     // spel scherm
     drawScore();
     drawGrid(SQUARE_SIZE, grid);
-    textSize(30);
+    textSize(22);
     fill(0);
     drawTargetAmountForRows();
     drawTargetAmountForColumns();
   } else {
     // begin scherm
-    textSize(35);
-    textAlign(CENTER, CENTER);
-    fill(0);
-    text("Enter your name: ", width / 2, 100);
-    
-    textSize(28);
-    textAlign(CENTER, CENTER);
-    fill(0);
-    text(playerName, width / 2, 150);
+    startScreen();
   }
-  
-  //if(shipsFound == 10) {
-  //  textSize(50);
-  //  textAlign(CENTER, CENTER);
-  //  fill(0);
-  //  text("EINDSCHERM", width / 2, 50);
-  //} else {
-  //  drawScore();
-  //  drawGrid(SQUARE_SIZE, grid);
-  //  textSize(30);
-  //  fill(0);
-  //  drawTargetAmountForRows();
-  //  drawTargetAmountForColumns();
-  //}
 }
 
 void mousePressed() {
   if(startGame) {
     handleSquareClick();
+  } else {
+    // handle start scherm clicks
   }
 }
 
 void keyPressed() {
-  if(key == BACKSPACE && playerName.length() > 1) {
-    playerName = playerName.substring(0, playerName.length() - 1);
-  } else if(key == BACKSPACE) {
-    playerName = "";
-  } else if(key == ENTER || key == RETURN) {
-    if(playerName.length() < 1) {
-      playerName = "Player 1";
+  if(!startGame) {
+    if(key == BACKSPACE && playerName.length() > 1) {
+      playerName = playerName.substring(0, playerName.length() - 1);
+    } else if(key == BACKSPACE) {
+      playerName = "";
+    } else if(key == ENTER || key == RETURN) {
+      if(playerName.length() < 1) {
+        playerName = "Player 1";
+      }
+      startGame = true;
+    } else if(key == SHIFT) {
+      return;
+    } else {
+      playerName += key;
     }
-    startGame = true;
-  } else if(key == SHIFT) {
-    return;
-  } else {
-    playerName += key;
-    println(key);
   }
 }

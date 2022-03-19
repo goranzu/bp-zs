@@ -75,7 +75,7 @@ void handleSquareClick() {
                     (isShipSunk(SUBMARINE_THREE) && squareType == SUBMARINE_THREE) ||
                     (isShipSunk(SUBMARINE_FOUR) && squareType == SUBMARINE_FOUR)) {
             shipsFound += 1;
-            score += shipLength(SUBMARINE_ONE);;
+            score += shipLength(SUBMARINE_ONE);
           }
         }
       }

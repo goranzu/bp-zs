@@ -11,7 +11,7 @@ int[][][] generateGrid(int rows, int cols) {
       square[0] = i; // welke colom
       square[1] = j; // welke rij
       square[2] = DEFAULT_SQUARE; // type - boat, mijn etc...
-      square[3] = 0; // zichtbaar = 1 , onzichtbaar = 0
+      square[3] = 1; // zichtbaar = 1 , onzichtbaar = 0
       //square[4] = 0; // als dit een boot is, wordt dit de lengte van de boot
     } 
   }
@@ -114,13 +114,13 @@ int[] calcTargetsPerColumn(int columns) {
 
 void drawTargetAmountForRows() {
   for(int i = 0; i < targetsPerRow.length; i += 1) {
-      text(targetsPerRow[i], WIDTH - 80, i * 50 + TOP_OFFSET);
+      text(targetsPerRow[i], WIDTH - 80, i * SQUARE_SIZE + TOP_OFFSET);
   }
 }
 
 void drawTargetAmountForColumns() {
   for(int i = 0; i < targetsPerColumns.length; i += 1) {
-      text(targetsPerColumns[i], (width / 2) + (i * 50 + 20) - ((grid.length / 2) * 50), TOP_OFFSET - 50);
+      text(targetsPerColumns[i], (width / 2) + (i * 50 + 20) - ((grid.length / 2) * 50), TOP_OFFSET - 35);
   }
 }
 
