@@ -1,24 +1,18 @@
-final int DEFAULT_SQUARE = 0;
-final int MINE_SQUARE = 1;
-
-int[][][] generateGrid(int rows, int cols) {
-  int[][][] grid = new int[rows][cols][4];
-
-  for(int i = 0; i < rows; i += 1) {
-    for(int j = 0; j < cols; j += 1) {
+int[][][] makeGrid(int cols, int rows) {
+  int[][][] grid = new int[cols][rows][4];
+  for(int i = 0; i < grid.length; i += 1) {
+    for(int j = 0; j < grid[i].length; j += 1) {
       int[] square = grid[i][j];
-      // geef de indexes een constante. zodat duidelijker is waar een index voor staat.
-      square[0] = i; // welke colom
-      square[1] = j; // welke rij
-      square[2] = DEFAULT_SQUARE; // type - boat, mijn etc...
-      square[3] = 1; // zichtbaar = 1 , onzichtbaar = 0
-      //square[4] = 0; // als dit een boot is, wordt dit de lengte van de boot
-    } 
+      square[0] = i * size; // row
+      square[1] = j * size + calcTopOffset(); // column
+      square[2] = 0; // cellType
+      square[3] = 0; // 0 = hidden, 1 = visible
+    }
   }
   return grid;
 }
 
-void drawGrid(int squareSize, int[][][] grid) {
+void drawGrid() {
   final int DEFAULT_COLOR = #ffffff;
   final int BOAT_HIT_COLOR = #000000;
   final int MINE_COLOR = #eb1313;
@@ -26,7 +20,7 @@ void drawGrid(int squareSize, int[][][] grid) {
   
   for(int i = 0; i < grid.length; i += 1) {
     for(int j = 0; j < grid[i].length; j += 1) {
-      int[] square = grid[j][i];
+      int[] square = grid[i][j];
       int squareType = square[2];
       int isRevealed = square[3];
       
@@ -41,9 +35,92 @@ void drawGrid(int squareSize, int[][][] grid) {
       } else {
         fill(DEFAULT_COLOR);
       }
-      
-      drawSquare(j, i, squareSize);
+      rect(square[0], square[1], size, size);
     }
+  }
+}
+
+int howManyTargetsOnGrid() {
+  int targets = 0;
+  for(int i = 0; i < grid.length; i += 1) {
+    for(int j = 0; j < grid[i].length; j += 1) {
+      if(isSquareTarget(grid[i][j][2])) {
+        targets += 1;
+      } 
+    }  
+  }
+  return targets;
+}
+
+String[] getEmptySquares() {
+  int maxEmptyPositions = (columns * rows) - howManyTargetsOnGrid();
+  String[] emptyLocations = new String[maxEmptyPositions];
+  
+  int index = 0;
+  for(int i = 0; i < grid.length; i += 1) {
+    for(int j = 0; j < grid[i].length; j += 1) {
+      if(isSquareEmpty(grid[i][j][2])) {
+        emptyLocations[index] = i + "-" + j;
+        index += 1;
+      }
+    }
+  }  
+  return emptyLocations;
+}
+
+void drawTargetsPerRow(int rows) {
+  int[] targetsPerRow = new int[rows];
+  int[][] location = new int[columns][2];
+
+  int row = 0;
+  
+  while(row != rows) {
+    int targets = 0;
+    for(int i = 0; i < columns; i += 1) {
+      // bij de laatste rij sla de locatie op
+      if(i == columns - 1) {
+        location[row][0] = grid[i][row][0];
+        location[row][1] = grid[i][row][1];
+      }
+      if(isSquareTarget(grid[i][row][2])) {
+        targets += 1;
+      }
+    }
+    targetsPerRow[row] = targets;
+    row += 1;
+  }
+  
+  for(int i = 0; i < targetsPerRow.length; i += 1) {
+    text(targetsPerRow[i], location[i][0] + size + 20, location[i][1] + (size / 2));
+  }
+}
+
+void drawTargetsPerColumn(int columns) {
+  int[] targetsPerColumns = new int[columns];
+  int[][] location = new int[columns][2];
+
+  int col = 0;
+  // bereken hoeveel targets per rij en de xCoord en yCoord waar de
+  // geplaatst moeten worden
+  while(col != columns) {
+    int targets = 0;
+    for(int i = 0; i < rows; i += 1) {
+      // bij de bovenste rij
+      if(i == 0) {
+        location[col][0] = grid[col][i][0];
+        location[col][1] = grid[col][i][1];
+      }
+      if(isSquareTarget(grid[col][i][2])) {
+        targets += 1;
+      }
+    }
+    targetsPerColumns[col] = targets;
+    col += 1;
+  }
+  
+  // teken de nummers op de juiste plaats
+  for(int i = 0; i < targetsPerColumns.length; i += 1) {
+    text(targetsPerColumns[i], location[i][0] + size / 2, location[i][1] - 20);
   }
 }
 
@@ -74,80 +151,4 @@ void layoutOne() {
   grid[5][3][2] = SUBMARINE_TWO;
   grid[9][9][2] = SUBMARINE_THREE;
   grid[7][0][2] = SUBMARINE_FOUR;
-}
-
-int[] calcTargetsPerRow(int rows) {
-  int[] targetsPerRow = new int[rows];
-  int row = 0;
-  
-  while(row != rows) {
-    int targets = 0;
-    for(int i = 0; i < columns; i += 1) {
-      if(isSquareTarget(grid[i][row][2])) {
-        targets += 1;
-      }
-    }
-    targetsPerRow[row] = targets;
-    row += 1;
-  }
-  
-  return targetsPerRow;
-}
-
-int[] calcTargetsPerColumn(int columns) {
-  int[] targetsPerColumns = new int[columns];
-
-  int col = 0;
-  while(col != columns) {
-    int targets = 0;
-    for(int i = 0; i < rows; i += 1) {
-      if(isSquareTarget(grid[col][i][2])) {
-        targets += 1;
-      }
-    }
-    targetsPerColumns[col] = targets;
-    col += 1;
-  }
-  
-  return targetsPerColumns;
-}
-
-void drawTargetAmountForRows() {
-  for(int i = 0; i < targetsPerRow.length; i += 1) {
-      text(targetsPerRow[i], WIDTH - 80, i * SQUARE_SIZE + TOP_OFFSET);
-  }
-}
-
-void drawTargetAmountForColumns() {
-  for(int i = 0; i < targetsPerColumns.length; i += 1) {
-      text(targetsPerColumns[i], (width / 2) + (i * 50 + 20) - ((grid.length / 2) * 50), TOP_OFFSET - 35);
-  }
-}
-
-String[] getEmptySquares() {
-  int maxEmptyPositions = (columns * rows) - howManyTargetsOnGrid();
-  String[] emptyLocations = new String[maxEmptyPositions];
-  
-  int index = 0;
-  for(int i = 0; i < grid.length; i += 1) {
-    for(int j = 0; j < grid[i].length; j += 1) {
-      if(isSquareEmpty(grid[i][j][2])) {
-        emptyLocations[index] = i + "-" + j;
-        index += 1;
-      }
-    }
-  }  
-  return emptyLocations;
-}
-
-int howManyTargetsOnGrid() {
-  int targets = 0;
-  for(int i = 0; i < grid.length; i += 1) {
-    for(int j = 0; j < grid[i].length; j += 1) {
-      if(isSquareTarget(grid[i][j][2])) {
-        targets += 1;
-      } 
-    }  
-  }
-  return targets;
 }

@@ -4,10 +4,19 @@ void generateMines(float percentageOfMines) {
   String[] possibleMineLocations = new String[maxEmptyPositions];
   possibleMineLocations = getEmptySquares();
   
-  float amountMines = maxEmptyPositions * percentageOfMines;
   
+  float amountMines = maxEmptyPositions * percentageOfMines;
   for(int i = 0; i < amountMines; i += 1) {
-    String location = possibleMineLocations[floor(random(0, maxEmptyPositions))];
+    int locationIndex = floor(random(0, maxEmptyPositions));
+    String location = possibleMineLocations[locationIndex];
+    
+    if(locationIndex != possibleMineLocations.length - 1) {
+      // haal de element weg uit de possibleMineLocations, zodat 2 mijnen niet dezelfde locatie kunnen krijgen
+      possibleMineLocations = removeItemFromArray(possibleMineLocations, locationIndex);
+    }
+    
+    // anders krijg ik een indeOutOfBoundsException, want de array wordt kleiner
+    maxEmptyPositions -= 1;
     int[] loc = int(split(location, "-"));
     grid[loc[0]][loc[1]][2] = MINE;
   }
