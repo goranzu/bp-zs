@@ -1,3 +1,60 @@
+String gridSize = "10x10";
+int columns;
+int rows;
+int size;
+
+int[][][] grid = new int[columns][rows][4];
+
+boolean isGridSet = false;
+
+boolean getIsGridSet() {
+  return isGridSet;
+}
+
+void setIsGridSet(boolean is) {
+  isGridSet = is;
+}
+
+void setGrid(int[][][] g) {
+  grid = g;
+}
+
+int[][][] getGrid() {
+  return grid;
+}
+
+String getGridSize() {
+  return gridSize;
+}
+
+void setGridSize(String grid) {
+  gridSize = grid;
+}
+
+int getColumns() {
+  return columns;
+}
+
+void setColumns(int col) {
+  columns = col;
+}
+
+int getRows() {
+  return rows;
+}
+
+void setRows(int r) {
+  rows = r;
+}
+
+int getSize() {
+  return size;
+}
+
+void setSize(int s) {
+  size = s;
+}
+
 int[][][] makeGrid(int cols, int rows) {
   int[][][] grid = new int[cols][rows][4];
   for(int i = 0; i < grid.length; i += 1) {
@@ -17,6 +74,10 @@ void drawGrid() {
   //final int BOAT_HIT_COLOR = #dddddd;
   final int MINE_COLOR = #eb1313;
   final int EMPTY_SQUARE_COLOR = #429ea6;
+  int battleShipColor = 25;
+  int cruiserColor = 50;
+  int torpedoColor = 75;
+  int submarineColor = 100;
   
   for(int i = 0; i < grid.length; i += 1) {
     for(int j = 0; j < grid[i].length; j += 1) {
@@ -26,13 +87,13 @@ void drawGrid() {
       
       if(isSquareRevealed(isRevealed)) {
         if(isBattleship(squareType)) {
-          fill(25);
+          fill(battleShipColor);
         } else if(isCruiser(squareType)) {
-          fill(50);
+          fill(cruiserColor);
         } else if(isTorpedoHunter(squareType)) {
-          fill(75);
+          fill(torpedoColor);
         } else if(isSubmarine(squareType)) {
-          fill(100);
+          fill(submarineColor);
         } else if(isSquareEmpty(squareType)) {
           fill(EMPTY_SQUARE_COLOR);
         } else if(isSquareMine(squareType)) {
@@ -75,6 +136,11 @@ String[] getEmptySquares() {
 }
 
 void drawTargetsPerRow(int rows) {
+  /*
+    Deze methode berekent en tekent de targets per rij.
+    Dit doe ik omdat ik in de zelfde loop het aantal targets en de coordinaten voor de tekst bereken.
+    Hierdoor leek het mij logischer om alles in een methode te doen.
+  */
   int[] targetsPerRow = new int[rows];
   int[][] location = new int[columns][2];
 
@@ -101,7 +167,14 @@ void drawTargetsPerRow(int rows) {
   }
 }
 
+
+
 void drawTargetsPerColumn(int columns) {
+  /*
+    Deze methode berekent en tekent de targets per kolom.
+    Dit doe ik omdat ik in de zelfde loop het aantal targets en de coordinaten voor de tekst bereken.
+    Hierdoor leek het mij logischer om alles in een methode te doen.
+  */
   int[] targetsPerColumns = new int[columns];
   int[][] location = new int[columns][2];
 
@@ -128,33 +201,4 @@ void drawTargetsPerColumn(int columns) {
   for(int i = 0; i < targetsPerColumns.length; i += 1) {
     text(targetsPerColumns[i], location[i][0] + size / 2, location[i][1] - 20);
   }
-}
-
-void layoutOne() {
-  grid[1][0][2] = SLAGSCHIP_ONE;
-  grid[1][1][2] = SLAGSCHIP_ONE;
-  grid[1][2][2] = SLAGSCHIP_ONE;
-  grid[1][3][2] = SLAGSCHIP_ONE;
-
-  grid[7][6][2] = CRUISER_ONE;
-  grid[7][7][2] = CRUISER_ONE;
-  grid[7][8][2] = CRUISER_ONE;
-
-  grid[0][8][2] = CRUISER_TWO;
-  grid[1][8][2] = CRUISER_TWO;
-  grid[2][8][2] = CRUISER_TWO;
-  
-  grid[1][5][2] = TORPEDO_HUNTER_ONE;
-  grid[1][6][2] = TORPEDO_HUNTER_ONE;
-
-  grid[9][2][2] = TORPEDO_HUNTER_TWO;
-  grid[9][3][2] = TORPEDO_HUNTER_TWO;
-
-  grid[4][0][2] = TORPEDO_HUNTER_THREE;
-  grid[5][0][2] = TORPEDO_HUNTER_THREE;
-  
-  grid[3][5][2] = SUBMARINE_ONE;
-  grid[5][3][2] = SUBMARINE_TWO;
-  grid[9][9][2] = SUBMARINE_THREE;
-  grid[7][0][2] = SUBMARINE_FOUR;
 }

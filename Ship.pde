@@ -1,6 +1,46 @@
+int getBattleShipOne() {
+  return 500;
+}
+
+int getCruiserOne() {
+  return 400;
+}
+
+int getCruiserTwo() {
+  return 401;
+}
+
+int getTorpedoHunterOne() {
+  return 300;
+}
+
+int getTorpedoHunterTwo() {
+  return 301;
+}
+
+int getTorpedoHunterThree() {
+  return 302;
+}
+
+int getSubmarineOne() {
+  return 200;
+}
+
+int getSubmarineTwo() {
+  return 201;
+}
+
+int getSubmarineThree() {
+  return 203;
+}
+
+int getSubmarineFour() {
+  return 204;
+}
+
 void placeBattleships(int[] shipArray) {
 String[] emptyLocations = getEmptySquares();
-  int maxEmptyPositions = (columns * rows) - howManyTargetsOnGrid();
+  int maxEmptyPositions = (getColumns() * getRows()) - howManyTargetsOnGrid();
   
   for(int x = 0; x < shipArray.length; x += 1) {
     while(true) {
@@ -14,14 +54,14 @@ String[] emptyLocations = getEmptySquares();
       
       if(!horizontal && hasTopSpace(col, shipLen) && everyVertSquareIsEmpty(row, col, shipLen)) {
         for(int i = col; i < col + shipLen; i += 1) {
-          grid[row][i][2] = shipArray[x];
+          getGrid()[row][i][2] = shipArray[x];
           emptyLocations = removeItemFromArray(emptyLocations, locationIndex);
           maxEmptyPositions -= 1;
         }
         break;
       } else if(horizontal && hasRightSpace(row, shipLen) && everyHorSquareIsEmpty(row, col, shipLen)) {
         for(int i = row; i < row + shipLen; i += 1) {
-            grid[i][col][2] = shipArray[x];
+            getGrid()[i][col][2] = shipArray[x];
             emptyLocations = removeItemFromArray(emptyLocations, locationIndex);
             maxEmptyPositions -= 1;
           }
@@ -54,9 +94,9 @@ boolean isShipSunk(int squareType) {
   // tel hoevaak een schip is geraakt(revealed).
   int hits = 0;
   
-  for(int i = 0; i < grid.length; i += 1) {
-    for(int j = 0; j < grid[i].length; j += 1) {
-      int[] square = grid[i][j];
+  for(int i = 0; i < getGrid().length; i += 1) {
+    for(int j = 0; j < getGrid()[i].length; j += 1) {
+      int[] square = getGrid()[i][j];
       boolean shipIsHit = square[2] == squareType;
       if(shipIsHit && isSquareRevealed(square[3])) {
         hits += 1;

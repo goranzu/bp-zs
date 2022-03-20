@@ -1,6 +1,6 @@
 void generateMines(float percentageOfMines) {
   // ik bereken dit 2 keer. onnodig??
-  int maxEmptyPositions = (columns * rows) - howManyTargetsOnGrid();
+  int maxEmptyPositions = (getColumns() * getRows()) - howManyTargetsOnGrid();
   //String[] possibleMineLocations = new String[maxEmptyPositions];
   String[] possibleMineLocations = getEmptySquares();
   
@@ -15,9 +15,10 @@ void generateMines(float percentageOfMines) {
       possibleMineLocations = removeItemFromArray(possibleMineLocations, locationIndex);
     }
     
-    // anders krijg ik een indeOutOfBoundsException, want de array wordt kleiner
+    // maxEmpypositions - 1, anders krijg ik een indeOutOfBoundsException, want de array wordt kleiner
     maxEmptyPositions -= 1;
+    
     int[] loc = int(split(location, "-"));
-    grid[loc[0]][loc[1]][2] = MINE;
+    getGrid()[loc[0]][loc[1]][2] = 1;
   }
 }

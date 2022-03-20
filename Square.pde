@@ -1,16 +1,18 @@
 void handleClick() {
-  for (int i = 0; i < grid.length; i += 1) {
-    for (int j = 0; j < grid[i].length; j += 1) {
-      int[] square = grid[i][j];
-      if(isClicked(square[0], square[1], size)) {
+  for (int i = 0; i < getGrid().length; i += 1) {
+    for (int j = 0; j < getGrid()[i].length; j += 1) {
+      int[] square = getGrid()[i][j];
+      if(isClicked(square[0], square[1], getSize(), getSize())) {
         int squareType = square[2];
         if(!isSquareRevealed(square[3])) {
           // onthul vakje
           square[3] = 1;
-          attempts += 1;
+          //attempts += 1;
+          setAttempts(getAttempts() + 1);
           
           if(isSquareMine(squareType)) {
-            score -= 1;
+            //score -= 1;
+            setScore(getScore() - 1);
             return;
           }
           
@@ -18,25 +20,39 @@ void handleClick() {
 
           // de check of het hele schip ontdekt is en of de vakje waarop geklikt is deze schip ook is.
           // dit is nodig anders worden er extra punten/ontdekte schepen toegekend
-          if(isShipSunk(SLAGSCHIP_ONE) && squareType == SLAGSCHIP_ONE) {
-            shipsFound += 1;
-            score += shipLength(SLAGSCHIP_ONE);
+          if(isShipSunk(getBattleShipOne()) && squareType == getBattleShipOne()) {
+            //shipsFound += 1;
+            setShipsFound(getShipsFound() + 1);
+            setScore(getScore() + shipLength(getBattleShipOne()));
+            //score += shipLength(SLAGSCHIP_ONE);
             // mischien voor elke schip type een functie maken?
-          } else if((isShipSunk(CRUISER_ONE) && squareType == CRUISER_ONE) ||
-                    (isShipSunk(CRUISER_TWO) && squareType == CRUISER_TWO)) {
-            shipsFound += 1;
-            score += shipLength(CRUISER_ONE);
-          } else if((isShipSunk(TORPEDO_HUNTER_ONE) && squareType == TORPEDO_HUNTER_ONE) ||
-                    (isShipSunk(TORPEDO_HUNTER_TWO) && squareType == TORPEDO_HUNTER_TWO) ||
-                    (isShipSunk(TORPEDO_HUNTER_THREE) && squareType == TORPEDO_HUNTER_THREE)){
-            shipsFound += 1;
-            score += shipLength(TORPEDO_HUNTER_ONE);
-          } else if((isShipSunk(SUBMARINE_ONE) && squareType == SUBMARINE_ONE) ||
-                    (isShipSunk(SUBMARINE_TWO) && squareType == SUBMARINE_TWO) ||
-                    (isShipSunk(SUBMARINE_THREE) && squareType == SUBMARINE_THREE) ||
-                    (isShipSunk(SUBMARINE_FOUR) && squareType == SUBMARINE_FOUR)) {
-            shipsFound += 1;
-            score += shipLength(SUBMARINE_ONE);
+          } else if((isShipSunk(getCruiserOne()) && squareType == getCruiserOne()) ||
+                    (isShipSunk(getCruiserTwo()) && squareType == getCruiserTwo())) {
+            //shipsFound += 1;
+            setShipsFound(getShipsFound() + 1);
+
+            //score += shipLength(CRUISER_ONE);
+            setScore(getScore() + shipLength(getCruiserOne()));
+
+          } else if((isShipSunk(getTorpedoHunterOne()) && squareType == getTorpedoHunterOne()) ||
+                    (isShipSunk(getTorpedoHunterTwo()) && squareType == getTorpedoHunterOne()) ||
+                    (isShipSunk(getTorpedoHunterOne()) && squareType == getTorpedoHunterOne())){
+            //shipsFound += 1;
+            setShipsFound(getShipsFound() + 1);
+
+            //score += shipLength(TORPEDO_HUNTER_ONE);
+            setScore(getScore() + shipLength(getTorpedoHunterOne()));
+
+          } else if((isShipSunk(getSubmarineOne()) && squareType == getSubmarineOne()) ||
+                    (isShipSunk(getSubmarineTwo()) && squareType == getSubmarineTwo()) ||
+                    (isShipSunk(getSubmarineThree()) && squareType == getSubmarineThree()) ||
+                    (isShipSunk(getSubmarineFour()) && squareType == getSubmarineFour())) {
+            //shipsFound += 1;
+            setShipsFound(getShipsFound() + 1);
+
+            //score += shipLength(SUBMARINE_ONE);
+            setScore(getScore() + shipLength(getSubmarineOne()));
+
           }
         }
       }

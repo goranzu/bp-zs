@@ -1,25 +1,28 @@
 void startScreen() {
+  String namePrompt = "Enter your name: ";
+  int xCoord = width / 2;
+  int yCoord = 100;
   textSize(35);
   textAlign(CENTER, CENTER);
   fill(0);
-  text("Enter your name: ", width / 2, 100);
+  text(namePrompt, xCoord, yCoord);
   
   textSize(28);
   textAlign(CENTER, CENTER);
   fill(0);
-  text(playerName, width / 2, 150);
+  text(playerName, xCoord, yCoord + 50);
   
   textSize(28);
   textAlign(CENTER, CENTER);
   fill(0);
-  text("Choose grid size", width / 2, height / 2 - 100);
+  text("Choose grid size", xCoord, yCoord + 150);
   
-  int startButtonsCoord = width / 2 - 150;
+  int startButtonsCoord = xCoord - 150;
   int gap = 150;
   
-  for(int i = 0; i < gridButtons.length; i += 1) {
-    button(startButtonsCoord * i + gap, height / 2, 100, 50, gridButtons[i]);
+  for(int i = 0; i < getGridButtons().length; i += 1) {
+    drawButton(startButtonsCoord * i + gap, height / 2, 100, 50, getGridButtons()[i]);
   }
   
-  button(width / 2, height / 2 + 100, 100, 50, "Start");
+  drawButton(xCoord, height / 2 + 100, 100, 50, "Start");
 }
