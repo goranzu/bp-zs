@@ -6,7 +6,7 @@ int[][][] makeGrid(int cols, int rows) {
       square[0] = i * size; // row
       square[1] = j * size + calcTopOffset(); // column
       square[2] = 0; // cellType
-      square[3] = 0; // 0 = hidden, 1 = visible
+      square[3] = 1; // 0 = hidden, 1 = visible
     }
   }
   return grid;
@@ -14,7 +14,7 @@ int[][][] makeGrid(int cols, int rows) {
 
 void drawGrid() {
   final int DEFAULT_COLOR = #ffffff;
-  final int BOAT_HIT_COLOR = #000000;
+  //final int BOAT_HIT_COLOR = #dddddd;
   final int MINE_COLOR = #eb1313;
   final int EMPTY_SQUARE_COLOR = #429ea6;
   
@@ -25,8 +25,14 @@ void drawGrid() {
       int isRevealed = square[3];
       
       if(isSquareRevealed(isRevealed)) {
-        if(isSquareTarget(squareType)) {
-          fill(BOAT_HIT_COLOR);
+        if(isBattleship(squareType)) {
+          fill(25);
+        } else if(isCruiser(squareType)) {
+          fill(50);
+        } else if(isTorpedoHunter(squareType)) {
+          fill(75);
+        } else if(isSubmarine(squareType)) {
+          fill(100);
         } else if(isSquareEmpty(squareType)) {
           fill(EMPTY_SQUARE_COLOR);
         } else if(isSquareMine(squareType)) {

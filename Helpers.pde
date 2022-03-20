@@ -24,7 +24,11 @@ void resetGame() {
 }
 
 void gameSetup() {
-// op default staat de grid op 10x10
+  int[] slagSchepen = {SLAGSCHIP_ONE};
+  int[] cruisers = {CRUISER_ONE, CRUISER_TWO};
+  int[] torpedoHunters = {TORPEDO_HUNTER_ONE, TORPEDO_HUNTER_TWO, TORPEDO_HUNTER_THREE};
+  int[] submarines = {SUBMARINE_ONE, SUBMARINE_TWO, SUBMARINE_THREE, SUBMARINE_FOUR};
+
   int[] gridSplit = int(split(gridSize, "x"));
   columns = gridSplit[0];
   rows = gridSplit[1];
@@ -38,10 +42,45 @@ void gameSetup() {
   }
   
   grid = makeGrid(columns, rows);
-  layoutOne();
+  
+  placeBattleships(slagSchepen);
+  placeBattleships(cruisers);
+  placeBattleships(torpedoHunters);
+  placeBattleships(submarines);
+  
   generateMines(0.1);
   
   isGridSet = true;
+}
+
+
+
+boolean everyHorSquareIsEmpty(int row, int col, int target) {
+  boolean empty = true;
+  for(int i = row; i < row + target; i += 1) {
+    if(!isSquareEmpty(grid[i][col][2])) {
+      empty = false;
+    }
+  }
+  return empty;
+}
+
+boolean everyVertSquareIsEmpty(int row, int col, int target) {
+  boolean empty = true;
+  for(int i = col; i < col + target; i += 1) {
+    if(!isSquareEmpty(grid[row][i][2])) {
+      empty = false;
+    }
+  }
+  return empty;
+}
+
+boolean hasRightSpace(int startSquare, int amountSquares) {
+  return startSquare + amountSquares <= rows;
+}
+
+boolean hasTopSpace(int startSquare, int amountSquares) {
+  return startSquare + amountSquares <= columns;
 }
 
 void saveHighscores() {

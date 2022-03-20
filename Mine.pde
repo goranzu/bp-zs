@@ -1,8 +1,8 @@
 void generateMines(float percentageOfMines) {
   // ik bereken dit 2 keer. onnodig??
   int maxEmptyPositions = (columns * rows) - howManyTargetsOnGrid();
-  String[] possibleMineLocations = new String[maxEmptyPositions];
-  possibleMineLocations = getEmptySquares();
+  //String[] possibleMineLocations = new String[maxEmptyPositions];
+  String[] possibleMineLocations = getEmptySquares();
   
   
   float amountMines = maxEmptyPositions * percentageOfMines;

@@ -58,7 +58,6 @@ void draw() {
   background(255);
   if(gameIsStarted && shipsFound == 10) {
     // handle end game
-    //noLoop();
     textSize(28);
     fill(0);
     text(playerName + " has " + score + " points", width / 2, 100);
@@ -70,7 +69,6 @@ void draw() {
     if(!isGridSet) {
       gameSetup();
     } else {
-      loop();
       drawGrid();
       drawScore();
       
